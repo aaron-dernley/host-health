@@ -427,8 +427,16 @@ export function parseMemInfo(text: string): Map<string, number> {
 /** Model definition for `@aaronge/host-health` — disk, thermal, load, and memory telemetry for any Linux host. */
 export const model = {
   type: "@aaronge/host-health",
-  version: "2026.08.26.1",
+  version: "2026.08.26.2",
   globalArguments: GlobalArgsSchema,
+  upgrades: [
+    {
+      toVersion: "2026.08.26.2",
+      description:
+        "No schema change — source moved from a per-extension subdirectory to the repo-root layout so GitHub renders the README.",
+      upgradeAttributes: (old: Record<string, unknown>) => old,
+    },
+  ],
   resources: {
     filesystems: {
       description:

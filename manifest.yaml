@@ -1,12 +1,9 @@
 manifestVersion: 1
 name: "@aaronge/host-health"
-version: "2026.08.26.1"
+version: "2026.08.26.2"
 description: "Zero-privilege Linux host telemetry (disk, thermal, load, memory) as a typed, versioned Swamp model for workflow assertions and CEL joins."
 
 repository: https://github.com/aaron-dernley/host-health
-
-paths:
-  base: manifest
 
 models:
   - host_health.ts

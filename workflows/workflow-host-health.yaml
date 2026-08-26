@@ -7,7 +7,7 @@ description: >-
 version: 1
 tags: {}
 trigger:
-  schedule: "*/15 * * * *"
+  schedule: "*/5 * * * *"
 inputs:
   properties:
     diskWarnPercent:

@@ -1,0 +1,16 @@
+{
+  "@aaronge/obsidian-atlas": {
+    "version": "2026.08.26.1",
+    "pulledAt": "2026-08-26T10:02:36.057Z",
+    "files": [
+      ".swamp/bundles/4502cd24/obsidian_atlas.js",
+      ".swamp/pulled-extensions/@aaronge/obsidian-atlas/files/LICENSE",
+      ".swamp/pulled-extensions/@aaronge/obsidian-atlas/files/README.md",
+      ".swamp/pulled-extensions/@aaronge/obsidian-atlas/manifest.yaml",
+      ".swamp/pulled-extensions/@aaronge/obsidian-atlas/models/obsidian_atlas.ts"
+    ],
+    "checksum": "e86bf76ec099b587c0a357d10e8f5a75bcb165e42214fd8470243f0c351e23b0",
+    "filesChecksum": "017a0f71d37c92d1d4451bacfbbd413218791988e54d16f6ed6bb3c669334080",
+    "serverUrl": "https://swamp-club.com"
+  }
+}

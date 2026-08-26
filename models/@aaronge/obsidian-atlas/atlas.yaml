@@ -1,0 +1,13 @@
+type: '@aaronge/obsidian-atlas'
+typeVersion: 2026.08.26.1
+id: 1a4001eb-014c-41f9-bd2a-ed346511f1a3
+name: atlas
+version: 1
+tags: {}
+globalArguments:
+  vaultRoot: /home/aaronge/Documents/Obsidian Vault
+  folder: Atlas
+  claudeBin: claude
+  permissionMode: bypassPermissions
+  timeoutSeconds: 900
+methods: {}

@@ -1,0 +1,137 @@
+id: 73546362-7553-4093-a058-7ead3d99cccf
+name: host-health
+description: >-
+  Collect disk, thermal, load, and memory telemetry from host-local, assert
+  each against a threshold, and print a one-screen summary. Fails when any
+  threshold is breached.
+version: 1
+tags: {}
+trigger:
+  schedule: "*/15 * * * *"
+inputs:
+  properties:
+    diskWarnPercent:
+      type: number
+      default: 85
+      description: Root filesystem usedPercent that trips the disk assert.
+    tempWarnCelsius:
+      type: number
+      default: 80
+      description: Thermal zone maxCelsius that trips the thermal assert.
+    loadWarnPerCore:
+      type: number
+      default: 1.5
+      description: load5PerCore that trips the load assert.
+    memWarnPercent:
+      type: number
+      default: 90
+      description: Memory usedPercent that trips the memory assert.
+jobs:
+  - name: collect
+    description: Read filesystem, thermal, load, and memory state in parallel.
+    dependsOn: []
+    steps:
+      - name: readFilesystems
+        task:
+          type: model_method
+          modelIdOrName: host-local
+          methodName: readFilesystems
+        dependsOn: []
+      - name: readThermal
+        task:
+          type: model_method
+          modelIdOrName: host-local
+          methodName: readThermal
+        dependsOn: []
+      - name: readLoad
+        task:
+          type: model_method
+          modelIdOrName: host-local
+          methodName: readLoad
+        dependsOn: []
+      - name: readMemory
+        task:
+          type: model_method
+          modelIdOrName: host-local
+          methodName: readMemory
+        dependsOn: []
+
+  - name: assert
+    description: Fail the run when any threshold is breached.
+    dependsOn:
+      - job: collect
+        condition:
+          type: completed
+    steps:
+      - name: disk-ok
+        allowFailure: false
+        task:
+          type: assert
+          expr: >-
+            data.latest("host-local", "filesystems").attributes.rootUsedPercent
+            < inputs.diskWarnPercent
+          message: >-
+            Root filesystem ${{ data.latest("host-local", "filesystems").attributes.rootUsedPercent }}%
+            used >= diskWarnPercent ${{ inputs.diskWarnPercent }}%
+          severity: high
+        dependsOn: []
+      - name: thermal-ok
+        allowFailure: false
+        task:
+          type: assert
+          expr: >-
+            data.latest("host-local", "thermal").attributes.maxCelsius
+            < inputs.tempWarnCelsius
+          message: >-
+            Max thermal zone ${{ data.latest("host-local", "thermal").attributes.maxCelsius }}C
+            >= tempWarnCelsius ${{ inputs.tempWarnCelsius }}C
+          severity: high
+        dependsOn: []
+      - name: memory-ok
+        allowFailure: false
+        task:
+          type: assert
+          expr: >-
+            data.latest("host-local", "memory").attributes.usedPercent
+            < inputs.memWarnPercent
+          message: >-
+            Memory ${{ data.latest("host-local", "memory").attributes.usedPercent }}%
+            used >= memWarnPercent ${{ inputs.memWarnPercent }}%
+          severity: high
+        dependsOn: []
+      - name: load-ok
+        allowFailure: false
+        task:
+          type: assert
+          expr: >-
+            data.latest("host-local", "load").attributes.load5PerCore
+            < inputs.loadWarnPerCore
+          message: >-
+            load5PerCore ${{ data.latest("host-local", "load").attributes.load5PerCore }}
+            >= loadWarnPerCore ${{ inputs.loadWarnPerCore }}
+          severity: high
+        dependsOn: []
+
+  - name: report
+    description: >-
+      Print a one-screen summary. Depends on collect only (not assert), so
+      it still runs when an assertion fails.
+    dependsOn:
+      - job: collect
+        condition:
+          type: completed
+    steps:
+      - name: summarize
+        task:
+          type: model_method
+          modelType: "command/shell"
+          modelName: host-health-summary
+          methodName: execute
+          inputs:
+            run: >-
+              echo "host-health: host-local" &&
+              echo "  disk root: ${{ data.latest('host-local', 'filesystems').attributes.rootUsedPercent }}% (worst ${{ data.latest('host-local', 'filesystems').attributes.worstUsedPercent }}%)" &&
+              echo "  thermal max: ${{ data.latest('host-local', 'thermal').attributes.maxCelsius }}C" &&
+              echo "  load 1m/5m/15m: ${{ data.latest('host-local', 'load').attributes.load1 }} / ${{ data.latest('host-local', 'load').attributes.load5 }} / ${{ data.latest('host-local', 'load').attributes.load15 }} (5m per-core ${{ data.latest('host-local', 'load').attributes.load5PerCore }})" &&
+              echo "  memory used: ${{ data.latest('host-local', 'memory').attributes.usedPercent }}% (swap used ${{ data.latest('host-local', 'memory').attributes.swapUsedBytes }} bytes)"
+        dependsOn: []

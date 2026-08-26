@@ -1,0 +1,13 @@
+type: '@aaronge/host-health'
+typeVersion: 2026.08.26.1
+id: 6eee7b0d-9057-4bec-8e9b-3200c18ca9a0
+name: host-local
+version: 1
+tags: {}
+globalArguments:
+  diskWarnPercent: 85
+  tempWarnCelsius: 80
+  loadWarnPerCore: 1.5
+  memWarnPercent: 90
+  includeVirtualFs: false
+methods: {}

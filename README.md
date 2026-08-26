@@ -88,7 +88,7 @@ The extension ships a `host-health` workflow: a `collect` job runs all four
 methods in parallel, an `assert` job checks each resource against a
 threshold (`allowFailure: false` — a failed run is the signal), and a
 `report` job prints a one-screen summary regardless of whether the assert
-job passed. It's scheduled every 15 minutes via `trigger.schedule`.
+job passed. It's scheduled every 5 minutes via `trigger.schedule`.
 
 ## License
 

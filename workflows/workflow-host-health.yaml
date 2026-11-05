@@ -20,7 +20,10 @@ inputs:
       description: Thermal zone maxCelsius that trips the thermal assert.
     loadWarnPerCore:
       type: number
-      default: 1.5
+      # 2.0, not the extension's 1.5: this Pi runs a stack of scheduled swamp
+      # workflows of its own, which held load5PerCore around 1.5 and failed
+      # this assert on every run without anything actually being wrong.
+      default: 2.0
       description: load5PerCore that trips the load assert.
     memWarnPercent:
       type: number

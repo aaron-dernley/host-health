@@ -7,7 +7,7 @@ tags: {}
 globalArguments:
   diskWarnPercent: 85
   tempWarnCelsius: 80
-  loadWarnPerCore: 1.5
+  loadWarnPerCore: 2.0
   memWarnPercent: 90
   includeVirtualFs: false
 methods: {}

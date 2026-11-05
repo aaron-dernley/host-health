@@ -55,9 +55,13 @@ expr: >-
 
 These thresholds aren't consumed by the methods themselves — they document
 the intended limits for a given host. A workflow that asserts against them
-declares matching `inputs` with the same defaults (see the bundled
-`host-health` workflow) since a workflow's CEL expressions can't reach into
-a model definition's global arguments directly.
+declares matching `inputs` (see the bundled `host-health` workflow) since a
+workflow's CEL expressions can't reach into a model definition's global
+arguments directly. The bundled workflow's defaults match the table above
+except `loadWarnPerCore`, which it sets to `2.0`. On the Pi it was built
+for, `load5PerCore` sat around 1.5, so 1.5 failed nearly every run with
+nothing actually wrong. Override the input per host if you want it
+tighter.
 
 ## How it works
 

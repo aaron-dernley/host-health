@@ -1,5 +1,5 @@
 id: 73546362-7553-4093-a058-7ead3d99cccf
-name: host-health
+name: "@aaronge/host-health"
 description: >-
   Collect disk, thermal, load, and memory telemetry from host-local, assert
   each against a threshold, and print a one-screen summary. Fails when any

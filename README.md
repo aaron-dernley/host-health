@@ -84,7 +84,11 @@ explanation.
 
 ## Workflow
 
-The extension ships a `host-health` workflow: a `collect` job runs all four
+The workflow is listed under `workflows:` in `manifest.yaml`, so
+`swamp extension pull @aaronge/host-health` installs it alongside the model.
+It expects a model instance named `host-local`.
+
+The extension ships an `@aaronge/host-health` workflow: a `collect` job runs all four
 methods in parallel, an `assert` job checks each resource against a
 threshold (`allowFailure: false` — a failed run is the signal), and a
 `report` job prints a one-screen summary regardless of whether the assert
